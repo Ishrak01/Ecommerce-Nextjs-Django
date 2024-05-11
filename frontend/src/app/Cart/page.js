@@ -129,7 +129,7 @@ const Cart = () => {
         <div className="mt-8 flex justify-between">
           <span className="text-lg font-semibold">Total: BDT {calculateTotalPrice()}</span>
           <Link href="/checkout">
-            <p1 className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Checkout</p1>
+            <p className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Checkout</p>
           </Link>
         </div>
       </div>
