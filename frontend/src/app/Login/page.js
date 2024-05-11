@@ -28,11 +28,14 @@ const Login = () => {
   useEffect(() => {
     if (data && data.tokens && data.tokens.access_token) {
       toast.success('Successfully logged in!');
-      router.push("/");
+      setTimeout(() => {
+        window.location.reload(); // Reload the page after a short delay
+      }, 1000); // Adjust the delay as needed
     } else if (isError) { 
       toast.error("An error occurred during login."); 
     }
-  }, [data, isError, router]); 
+  }, [data, isError]);
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
