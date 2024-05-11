@@ -50,10 +50,10 @@ export default function Navbar() {
         ) : (
           <div className="flex gap-5 justify-around">
             <Link href="/Registration" className="hidden md:block">
-              <a>Register</a>
+              Register
             </Link>
             <Link href="/Login" className="hidden md:block">
-              <a>Login</a>
+              Login
             </Link>
             <div>
               <Link href="/Cart">

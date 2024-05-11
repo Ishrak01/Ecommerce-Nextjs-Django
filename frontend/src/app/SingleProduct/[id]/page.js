@@ -1,5 +1,5 @@
 "use client"
-import { useAddToCartMutation, useCartQuery } from "@/app/Features/Cart/cartApi";
+import { useAddEmptyCartMutation, useAddToCartMutation, useCartQuery } from "@/app/Features/Cart/cartApi";
 import { useRelatedProductsQuery, useSingleProductsQuery } from "@/app/Features/Products/productsApi";
 
 
@@ -18,6 +18,7 @@ const SingleProduct= ({ params }) => {
   const { data: relatedProducts,isLoading:loading } = useRelatedProductsQuery(id);
   let user_cart_id, body;
   const [addToCart] = useAddToCartMutation(user_cart_id, body);
+  const [addEmptyCart] = useAddEmptyCartMutation();
 
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -31,6 +32,14 @@ const SingleProduct= ({ params }) => {
 
   if(!newLoad && cartItems2){
     user_cart_id = cartItems2[cartItems2.length - 1].id;
+  }
+  else{
+    // const {data: emptyCartResponse, isLoading: newRes} = addEmptyCart({});
+    // if(!newRes && emptyCartResponse){
+    //   user_cart_id = emptyCartResponse[emptyCartResponse.length - 1].id;
+    // }
+    // else return;
+    alert("No cart available")
   }
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
