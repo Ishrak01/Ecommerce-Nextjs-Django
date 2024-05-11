@@ -72,7 +72,7 @@ const SingleProduct= ({ params }) => {
   }
 
   return (
-    <main className="mx-[120px] container mt-8 p-4 space-y-4">
+    <main className="mx-[120px] container mt-8 p-4 space-y-4 ">
       {data && (
         <div className="grid  grid-cols-1 md:grid-cols-3  ">
           <div className="mb-4 md:mb-0">

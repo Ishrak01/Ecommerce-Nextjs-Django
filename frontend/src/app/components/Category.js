@@ -13,10 +13,10 @@ const CategoryList = () => {
         const response = await axios.get(`${BASE_URL}/products/?categories`);
         const { data } = response;
         if (Array.isArray(data)) {
-          // If the response data is an array, assume it's the list of categories
+         
           setCategories(data);
         } else if (data && data.categories) {
-          // If the response data contains a property called "categories", assume it's the list of categories
+         
           setCategories(data.categories);
         } else {
           console.error('Invalid response format:', data);

@@ -74,7 +74,7 @@ const Products = () => {
   
       <div className="grid   grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-8 gap-4">
         {allProducts.map((product, index) => (
-          <Link key={product.id} href={`/SingleProduct/${product.id}`}>
+          <Link  key={product.id} href={`/SingleProduct/${product.id}`}>
             <div
               ref={index === allProducts.length - 1 ? setLastProductRef : null}
               className="block bg-white p-4 rounded-lg shadow-md"
