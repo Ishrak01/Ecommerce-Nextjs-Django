@@ -88,7 +88,7 @@ const Login = () => {
           </div>
         </form>
         <div className="text-red-600">
-          <Link href="/registration">New User?</Link>
+          <Link href="/Registration">New User?</Link>
         </div>
       </div>
     </div>

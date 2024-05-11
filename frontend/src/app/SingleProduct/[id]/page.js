@@ -1,6 +1,7 @@
 "use client"
 import { useAddEmptyCartMutation, useAddToCartMutation, useCartQuery } from "@/app/Features/Cart/cartApi";
 import { useRelatedProductsQuery, useSingleProductsQuery } from "@/app/Features/Products/productsApi";
+import { useEffect } from "react";
 
 
 import BASE_URL from "@/app/components/BaseUrl";
@@ -11,36 +12,52 @@ import toast from "react-hot-toast";
 
 
 
-const SingleProduct= ({ params }) => {
+const SingleProduct = ({ params }) => {
   const { id } = params;
-  
+  const [userCartId, setUserCartId] = useState(null)
+
   const { data } = useSingleProductsQuery(id);
-  const { data: relatedProducts,isLoading:loading } = useRelatedProductsQuery(id);
+  const { data: relatedProducts, isLoading: loading } = useRelatedProductsQuery(id);
   let user_cart_id, body;
   const [addToCart] = useAddToCartMutation(user_cart_id, body);
-  const [addEmptyCart] = useAddEmptyCartMutation();
+  const [addEmptyCart] = useAddEmptyCartMutation()
+
 
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [quantity, setQuantity] = useState(1);
-  
 
 
 
-  
+
+
   const { data: cartItems2, isLoading: newLoad } = useCartQuery();
 
-  if(!newLoad && cartItems2){
-    user_cart_id = cartItems2[cartItems2.length - 1].id;
-  }
-  else{
-    // const {data: emptyCartResponse, isLoading: newRes} = addEmptyCart({});
-    // if(!newRes && emptyCartResponse){
-    //   user_cart_id = emptyCartResponse[emptyCartResponse.length - 1].id;
-    // }
-    // else return;
-    alert("No cart available")
-  }
+  // if(!newLoad && cartItems2 && cartItems2.length > 0){
+  //   user_cart_id = cartItems2[cartItems2.length - 1].id;
+  // }
+
+  useEffect(() => {
+    const initializeUserCartId = async () => {
+      if (!newLoad && cartItems2 && cartItems2.length === 0) {
+        try {
+          const response = await addEmptyCart();
+          setUserCartId(response.data.id);
+        } catch (error) {
+          console.error("Error initializing cart:", error);
+        }
+      } else if (!newLoad && cartItems2 && cartItems2.length > 0) {
+        setUserCartId(cartItems2[cartItems2.length - 1].id);
+      }
+    };
+
+    initializeUserCartId();
+  }, [newLoad, cartItems2, addEmptyCart]);
+
+
+
+
+
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
       toast.error("Please select size and color.");
@@ -51,25 +68,25 @@ const SingleProduct= ({ params }) => {
       toast.error("Invalid variant.");
       return;
     }
-  
+
     if (quantity > selectedVariant.stock) {
       toast.error("Quantity exceeds available stock.");
       return;
     }
     body = {
-      product_id: data.id, 
-      color: selectedColor, 
-      size: selectedSize, 
-      image: 0, 
-      quantity: quantity 
+      product_id: data.id,
+      color: selectedColor,
+      size: selectedSize,
+      image: 0,
+      quantity: quantity
     }
 
-    addToCart({user_cart_id, body});
+    addToCart({ user_cart_id: userCartId, body });
     toast.success("Item added to cart.");
 
 
 
-    
+
   };
   if (loading) {
     return (
@@ -90,12 +107,12 @@ const SingleProduct= ({ params }) => {
               alt="Product"
               className="size-[300px]   rounded-lg shadow-md"
             />
-            <br/>
-             {data.title} 
+            <br />
+            {data.title}
           </div>
-         
+
           <div className="space-x-3">
-          <h2 className="text-2xl md:text-xl font-semibold mb-2 md:mb-4">Size</h2>
+            <h2 className="text-2xl md:text-xl font-semibold mb-2 md:mb-4">Size</h2>
             <div className="flex flex-wrap gap-2 mb-4">
               {data.variants.map(variant => (
                 <button
@@ -129,8 +146,8 @@ const SingleProduct= ({ params }) => {
               onChange={(e) => setQuantity(parseInt(e.target.value))}
               className="w-24 px-4 py-2 border rounded-md"
             />
-           
-            
+
+
             <button
               className="bg-orange-600 text-black px-4 py-2 rounded-md hover:bg-primary-dark border"
               onClick={handleAddToCart}
@@ -148,16 +165,16 @@ const SingleProduct= ({ params }) => {
             {relatedProducts.products.map(product => (
               <div key={product._id} className="bg-white rounded-lg shadow-md p-2">
                 <Link href={`/SingleProduct/${product.id}`}>
-                
-                    <img
-                      src={BASE_URL + product.images[0].thumb}
-                      alt={product.name}
-                      className="size-[250px] rounded-lg mb-4"
-                    />
-                    <h2 className="text-lg text-black font-semibold mb-2 truncate">{product.title}</h2>
-                  
+
+                  <img
+                    src={BASE_URL + product.images[0].thumb}
+                    alt={product.name}
+                    className="size-[250px] rounded-lg mb-4"
+                  />
+                  <h2 className="text-lg text-black font-semibold mb-2 truncate">{product.title}</h2>
+
                 </Link>
-                
+
               </div>
             ))}
           </div>
