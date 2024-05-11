@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 const SingleProduct= ({ params }) => {
   const { id } = params;
-  console.log(id)
+  
   const { data } = useSingleProductsQuery(id);
   const { data: relatedProducts,isLoading:loading } = useRelatedProductsQuery(id);
   let user_cart_id, body;
@@ -72,7 +72,7 @@ const SingleProduct= ({ params }) => {
   }
 
   return (
-    <main className="mx-[120px] container mt-8 p-4 space-y-4 ">
+    <div className="mx-[120px] container mt-8 p-4 space-y-4 ">
       {data && (
         <div className="grid  grid-cols-1 md:grid-cols-3  ">
           <div className="mb-4 md:mb-0">
@@ -154,7 +154,7 @@ const SingleProduct= ({ params }) => {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 };
 
