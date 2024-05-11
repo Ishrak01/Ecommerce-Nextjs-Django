@@ -28,7 +28,7 @@ const Login = () => {
   useEffect(() => {
     if (data && data.tokens && data.tokens.access_token) {
       toast.success('Successfully logged in!');
-      router.push("/Cart");
+      router.push("/");
     } else if (isError) { 
       toast.error("An error occurred during login."); 
     }
