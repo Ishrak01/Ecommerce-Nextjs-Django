@@ -16,7 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
 
         <ReduxProvider>
-          <div className="sticky top-0"> <Navbar /></div>
+          <div className="sticky top-0" suppressHydrationWarning={true}> <Navbar /></div>
          
           <Toaster position="top-right" />  
           {children}
